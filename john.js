@@ -1,3 +1,4 @@
+// based on idea by Denver Jackson
 // start point
 // find blank space on 4 cardinals
 // is it x-axis(horizontal) ( x, y ) => [ y, x ]
