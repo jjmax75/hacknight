@@ -70,7 +70,7 @@ function findX() {
   let y = move[ 0 ];
   console.log( mazeArr[ y ][ x ], steps, y, x );
 
-  if ( mazeArr[ y ][ x ] === 'X' ) {
+  if ( mazeArr[ y ][ x ] !== ' ' ) {
     console.log( steps );
   } else {
     steps ++;
@@ -78,8 +78,9 @@ function findX() {
     currentY = y;
     findX();
   }
-
 }
+
+
 
 currentDirection = findDirection();
 findX();
