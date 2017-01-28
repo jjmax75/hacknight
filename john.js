@@ -34,33 +34,50 @@ let currentDirection;
 let steps = 0;
 
 const allDirections = {
-  up: [ currentY - 1, currentX ],
-  down: [ currentY + 1, currentX ],
-  left: [ currentY, currentX - 1 ],
-  right: [ currentY, currentX + 1 ]
+  up: () => { return [ currentY - 1, currentX ] },
+  down: () => { return [ currentY + 1, currentX ] },
+  left: () => { return [ currentY, currentX - 1 ] },
+  right: () => { return [ currentY, currentX + 1 ] }
 };
 
 // get coordinates of next move
 function getMove(  direction ) {
   switch( direction ) {
     case 'up':
-      return [ currentY - 1, currentX ];
+      return allDirections.up();
     case 'down':
-      return [ currentY + 1, currentX ];
+      return allDirections.down();
     case 'left':
-      return [ currentY, currentX - 1 ];
+      return allDirections.left();
     case 'right':
-      return [ currentY, currentX + 1 ];
+      return allDirections.right();
   }
 }
 
 function findDirection( directions = allDirections ) {
   for ( let direction of Object.keys( directions ) ) {
-    let x = directions[ direction ][ 1 ];
-    let y = directions[ direction ][ 0 ];
+    let position = directions[ direction ]();
+    let x = position[ 1 ];
+    let y = position[ 0 ];
     if ( mazeArr[ y ][ x ] === ' ' ) {
       return direction;
     }
+  }
+}
+
+function whichAxis() {
+  if ( currentDirection === 'left' || currentDirection === 'right' ) {
+    let xAxes = {
+      left: allDirections.left,
+      right: allDirections.right
+    };
+    findDirection( xAxes );
+  } else {
+    let yAxes = {
+      up: allDirections.up,
+      down: allDirections.down
+    };
+    findDirection( yAxes );
   }
 }
 
@@ -71,7 +88,12 @@ function findX() {
   console.log( mazeArr[ y ][ x ], steps, y, x );
 
   if ( mazeArr[ y ][ x ] !== ' ' ) {
-    console.log( steps );
+    if ( mazeArr[ y ][ x ] === '.' ) {
+      console.log( steps )
+      return false;
+    } else {
+      return true;
+    }
   } else {
     steps ++;
     currentX = x;
@@ -80,7 +102,13 @@ function findX() {
   }
 }
 
+function mazeRunner() {
+  let searching = true;
+  while( searching ){
+    currentDirection = findDirection();
+    searching = findX();
+    console.log( searching );
+  }
+}
 
-
-currentDirection = findDirection();
-findX();
+mazeRunner();
