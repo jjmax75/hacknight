@@ -66,18 +66,18 @@ function findDirection( directions = allDirections ) {
 }
 
 function whichAxis() {
-  if ( currentDirection === 'left' || currentDirection === 'right' ) {
+  if ( currentDirection === 'up' || currentDirection === 'down' ) {
     let xAxes = {
       left: allDirections.left,
       right: allDirections.right
     };
-    findDirection( xAxes );
+    return findDirection( xAxes );
   } else {
     let yAxes = {
       up: allDirections.up,
       down: allDirections.down
     };
-    findDirection( yAxes );
+    return findDirection( yAxes );
   }
 }
 
@@ -87,27 +87,25 @@ function findX() {
   let y = move[ 0 ];
   console.log( mazeArr[ y ][ x ], steps, y, x );
 
-  if ( mazeArr[ y ][ x ] !== ' ' ) {
-    if ( mazeArr[ y ][ x ] === '.' ) {
-      console.log( steps )
-      return false;
-    } else {
-      return true;
-    }
-  } else {
+  if ( mazeArr[ y ][ x ] === ' ' ) {
     steps ++;
     currentX = x;
     currentY = y;
-    findX();
+    return findX();
+  } else if ( mazeArr[ y ][ x ] === '.' ) {
+    return false;
+  } else {
+    return true;
   }
 }
 
 function mazeRunner() {
   let searching = true;
+  currentDirection = findDirection();
   while( searching ){
-    currentDirection = findDirection();
     searching = findX();
-    console.log( searching );
+    currentDirection = whichAxis();
+    console.log( currentDirection );
   }
 }
 
